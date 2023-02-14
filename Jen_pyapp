@@ -1,0 +1,26 @@
+pipeline {
+	agent any
+	stages {
+		stage('Clone from Github Repo') {
+			steps {
+				sh 'git clone https://github.com/Sri-331010/pyjenkinsdemo.git'
+			}
+		}
+		stage('Build') {
+			steps {
+				dir('pyjenkinsdemo') {
+				sh 'docker build -t web-app:v1 .' }
+			}
+		}
+		stage('Run') {
+			steps {
+				sh "docker run -d --add-host=abc:127.0.0.1 -p 5000:8080 web-app:v1"
+			}
+		}
+		stage('Test') {
+			steps {
+				sh 'curl 127.0.0.1:5000'
+			}
+		}
+	}
+}
